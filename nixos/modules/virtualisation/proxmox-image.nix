@@ -200,6 +200,14 @@ with lib;
                 in "https://git.proxmox.com/?p=pve-qemu.git;a=blob_plain;hb=${rev};f=${path}";
               hash = "sha256-2Dz+ceTwrcyYYxi76RtyY3v15/2pwGcDhFuoZWlgbjc=";
             })
+            (pkgs.fetchpatch {
+              url =
+                let
+                  rev = "271ac0a8a773f634ca613c811697c4c3ff5f09d1";
+                  path = "debian/patches/pve/0060-vma-create-avoid-triggering-assertion-in-error-case.patch";
+                in "https://git.proxmox.com/?p=pve-qemu.git;a=blob_plain;hb=${rev};f=${path}";
+              hash = "sha256-wA4G77cltdXswwMAzxkLtC35GIbQDP66Ed/GqgZunYY=";
+            })
           ];
 
           buildInputs = super.buildInputs ++ [ pkgs.libuuid ];
