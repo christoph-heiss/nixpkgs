@@ -76,4 +76,6 @@ self: super: {
     rum = super.callPackage ./ext/rum.nix { };
 
     wal2json = super.callPackage ./ext/wal2json.nix { };
+
+    zombodb = super.callPackage ./ext/zombodb.nix { };
 }
