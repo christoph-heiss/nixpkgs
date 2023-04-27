@@ -11110,6 +11110,8 @@ with pkgs;
 
   pim6sd = callPackage ../servers/pim6sd { };
 
+  picoshare = callPackage ../servers/picoshare { };
+
   phosh = callPackage ../applications/window-managers/phosh { };
 
   phosh-mobile-settings = callPackage ../applications/window-managers/phosh/phosh-mobile-settings.nix { };
