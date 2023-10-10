@@ -42,6 +42,8 @@ with lib;
         gst-plugins-base = super.gst_all_1.gst-plugins-base.override { enableWayland = false; enableX11 = false; };
         gst-plugins-good = super.gst_all_1.gst-plugins-good.override { enableX11 = false; };
       };
+      gtk3 = super.gtk3.override { waylandSupport = false; x11Support = false; };
+      gtk4 = super.gtk3.override { waylandSupport = false; x11Support = false; };
       imagemagick = super.imagemagick.override { libX11Support = false; libXtSupport = false; };
       imagemagickBig = super.imagemagickBig.override { libX11Support = false; libXtSupport = false; };
       libdevil = super.libdevil-nox;

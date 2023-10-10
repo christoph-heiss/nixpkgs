@@ -180,6 +180,8 @@ stdenv.mkDerivation rec {
     "-Dmedia-gstreamer=disabled" # requires gstreamer-gl
   ] ++ lib.optionals (!x11Support) [
     "-Dx11-backend=false"
+  ] ++ lib.optionals (!waylandSupport) [
+    "-Dwayland-backend=false"
   ];
 
   doCheck = false; # needs X11
