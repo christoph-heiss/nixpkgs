@@ -230,6 +230,21 @@ let
       inherit python;
     };
   };
+
+  vips' = vips.overrideAttrs (_: rec {
+    version = "8.14.5";
+    src = pkgs.fetchFromGitHub {
+      owner = "libvips";
+      repo = "libvips";
+      rev = "v${version}";
+      hash = "sha256-fG3DTP+3pO7sbqR/H9egJHU3cLKPU4Jad6qxcQ9evNw=";
+      # Remove unicode file names which leads to different checksums on HFS+
+      # vs. other filesystems because of unicode normalisation.
+      postFetch = ''
+        rm -r $out/test/test-suite/images/
+      '';
+    };
+  });
 in
 buildNpmPackage' {
   pname = "immich";
@@ -247,7 +262,7 @@ buildNpmPackage' {
     ffmpeg
     imagemagick
     libraw
-    vips # Required for sharp
+    vips' # Required for sharp
   ];
 
   # Required because vips tries to write to the cache dir
