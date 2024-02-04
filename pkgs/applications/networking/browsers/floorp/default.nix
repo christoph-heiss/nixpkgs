@@ -5,6 +5,9 @@
 , nixosTests
 }:
 
+# Upstream build configuration:
+# https://github.com/Floorp-Projects/Floorp/blob/v11.9.0/.github/workflows/src/linux/shared/mozconfig_linux_base
+
 ((buildMozillaMach rec {
   pname = "floorp";
   packageVersion = "11.9.0";
@@ -26,7 +29,7 @@
   extraConfigureFlags = [
     "--with-app-name=${pname}"
     "--with-app-basename=${applicationName}"
-    "--with-distribution-id=app.floorp.Floorp"
+    "--with-distribution-id=one.ablaze.floorp"
     "--with-unsigned-addon-scopes=app,system"
     "--with-l10n-base=../floorp/browser/locales/l10n-central"
     "--allow-addon-sideload"
@@ -48,6 +51,10 @@
   privacySupport = true;
   webrtcSupport = true;
   enableOfficialBranding = false;
+  googleAPISupport = true;
+  mlsAPISupport = true;
 }).overrideAttrs (prev: {
+  MOZ_DATA_REPORTING = "";
   MOZ_REQUIRE_SIGNING = "";
+  MOZ_TELEMETRY_REPORTING = "";
 })
