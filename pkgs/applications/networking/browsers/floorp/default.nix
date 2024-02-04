@@ -28,6 +28,7 @@
     "--with-app-basename=${applicationName}"
     "--with-distribution-id=app.floorp.Floorp"
     "--with-unsigned-addon-scopes=app,system"
+    "--with-l10n-base=../floorp/browser/locales/l10n-central"
     "--allow-addon-sideload"
   ];
 
