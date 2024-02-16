@@ -8,6 +8,11 @@
 # Upstream build configuration:
 # https://github.com/Floorp-Projects/Floorp/blob/v11.9.0/.github/workflows/src/linux/shared/mozconfig_linux_base
 
+let allLocales = [
+  "ar" "cs" "da" "de" "el" "en-US" "en-GB" "es-ES" "fr" "hu" "id" "it" "ja" "ko"
+  "lt" "nl" "nn-NO" "pl" "pt-BR" "pt-PT" "ru" "sv-SE" "th" "tr" "uk" "vi" "zh-CN" "zh-TW"
+];
+in
 ((buildMozillaMach rec {
   pname = "floorp";
   packageVersion = "11.9.0";
@@ -34,6 +39,18 @@
     "--with-l10n-base=../floorp/browser/locales/l10n-central"
     "--allow-addon-sideload"
   ];
+
+  extraPostPatch = ''
+    echo 'browser (%browser/**/*.ftl)' >> floorp/browser/locales/jar.nm
+    cat <<EOF >floorp/browser/locales/l10n.ini
+    [general]
+      depth = ../..
+      all = floorp/browser/locales/all-locales
+    EOF
+    cat <<EOF >floorp/browser/locales/all-locales
+    ${builtins.concatStringsSep "\n" allLocales}
+    EOF
+  '';
 
   meta = {
     description = "A fork of Firefox, focused on keeping the Open, Private and Sustainable Web alive, built in Japan";
