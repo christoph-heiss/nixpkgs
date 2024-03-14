@@ -7007,6 +7007,18 @@ final: prev:
     meta.homepage = "https://github.com/folke/noice.nvim/";
   };
 
+  none-ls-luacheck-nvim = buildVimPlugin {
+    pname = "none-ls-luacheck.nvim";
+    version = "2024-02-28";
+    src = fetchFromGitHub {
+      owner = "gbprod";
+      repo = "none-ls-luacheck.nvim";
+      rev = "c55a16c86cd8e16df0169b89c2db4b89b1838d73";
+      sha256 = "1mza2i7s85z9p26wr1kmskm22fkkga2hc2714nvv1apds6gmfjpx";
+    };
+    meta.homepage = "https://github.com/gbprod/none-ls-luacheck.nvim/";
+  };
+
   none-ls-nvim = buildVimPlugin {
     pname = "none-ls.nvim";
     version = "2024-02-29";
