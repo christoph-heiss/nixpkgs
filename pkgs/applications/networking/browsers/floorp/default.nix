@@ -5,6 +5,13 @@
 , nixosTests
 }:
 
+let
+  locales = [
+    "ar" "cs" "da" "de" "el" "en-US" "en-GB" "es-ES" "fr" "hu" "id" "it" "ja"
+    "ko" "lt" "nl" "nn-NO" "pl" "pt-BR" "pt-PT" "ru" "sv-SE" "th" "tr" "uk"
+    "vi" "zh-CN" "zh-TW"
+  ];
+in
 ((buildMozillaMach rec {
   pname = "floorp";
   packageVersion = "11.11.2";
@@ -29,7 +36,16 @@
     "--with-app-name=${pname}"
     "--with-app-basename=${applicationName}"
     "--with-unsigned-addon-scopes=app,system"
+    "--with-l10n-base=../floorp/browser/locales"
   ];
+
+  extraPostBuild = ''
+    set -x
+    cp floorp/browser/locales/jar.mn browser/locales/jar.mn
+    ./mach package-multi-locale --locales ${builtins.concatStringsSep " " locales}
+    find . -type f -name '*.jar'
+    exit 1
+  '';
 
   meta = {
     description = "A fork of Firefox, focused on keeping the Open, Private and Sustainable Web alive, built in Japan";

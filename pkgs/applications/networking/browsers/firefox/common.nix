@@ -13,6 +13,7 @@
 , unpackPhase ? null
 , extraPatches ? []
 , extraPostPatch ? ""
+, extraPostBuild ? ""
 , extraNativeBuildInputs ? []
 , extraConfigureFlags ? []
 , extraBuildInputs ? []
@@ -104,7 +105,7 @@ in
 , jackSupport ? stdenv.isLinux, libjack2
 , jemallocSupport ? !stdenv.hostPlatform.isMusl, jemalloc
 , ltoSupport ? (stdenv.isLinux && stdenv.is64bit && !stdenv.hostPlatform.isRiscV), overrideCC, buildPackages
-, pgoSupport ? (stdenv.isLinux && stdenv.hostPlatform == stdenv.buildPlatform), xvfb-run
+, pgoSupport ? (false && stdenv.isLinux && stdenv.hostPlatform == stdenv.buildPlatform), xvfb-run
 , pipewireSupport ? waylandSupport && webrtcSupport
 , pulseaudioSupport ? stdenv.isLinux, libpulseaudio
 , sndioSupport ? stdenv.isLinux, sndio
@@ -515,7 +516,7 @@ buildStdenv.mkDerivation {
 
   postBuild = ''
     cd ..
-  '';
+  '' + extraPostBuild;
 
   makeFlags = extraMakeFlags;
   separateDebugInfo = enableDebugSymbols;
