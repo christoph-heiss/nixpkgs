@@ -1,0 +1,40 @@
+From 5f36f6821a3d559721f677acdacb94dcfc5d3d2a Mon Sep 17 00:00:00 2001
+From: Christoph Heiss <c.heiss@proxmox.com>
+Date: Thu, 11 Apr 2024 15:47:39 +0200
+Subject: [PATCH proxmox-backup] proxmox-backup: provide musl compatibility for
+ static builds
+
+Signed-off-by: Christoph Heiss <c.heiss@proxmox.com>
+---
+ proxmox-backup/pbs-client/src/pxar/create.rs | 2 +-
+ proxmox-backup/pbs-tools/src/lib.rs          | 1 +
+ 2 files changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/pbs-client/src/pxar/create.rs b/pbs-client/src/pxar/create.rs
+index 60efb0ce..32aeb2d4 100644
+--- a/proxmox-backup/pbs-client/src/pxar/create.rs
++++ b/proxmox-backup/pbs-client/src/pxar/create.rs
+@@ -51,7 +51,7 @@ fn detect_fs_type(fd: RawFd) -> Result<i64, Error> {
+     Errno::result(res)?;
+     let fs_stat = unsafe { fs_stat.assume_init() };
+
+-    Ok(fs_stat.f_type)
++    Ok(fs_stat.f_type as i64)
+ }
+
+ fn strip_ascii_whitespace(line: &[u8]) -> &[u8] {
+diff --git a/pbs-tools/src/lib.rs b/pbs-tools/src/lib.rs
+index bee5c1c0..d3064e15 100644
+--- a/proxmox-backup/pbs-tools/src/lib.rs
++++ b/proxmox-backup/pbs-tools/src/lib.rs
+@@ -23,6 +23,7 @@ pub mod async_lru_cache;
+ /// less erratic behavior in the overall's runtime RSS size.
+ pub fn setup_libc_malloc_opts() {
+     unsafe {
++        #[cfg(not(target_env = "musl"))]
+         libc::mallopt(libc::M_MMAP_THRESHOLD, 4096 * 32);
+     }
+ }
+--
+2.44.0
+

@@ -5,19 +5,19 @@ Subject: [PATCH] docs: Add target path fixup variable
 
 Signed-off-by: Christoph Heiss <christoph@c8h4.io>
 ---
- docs/Makefile | 5 +++--
+ proxmox-backup/docs/Makefile | 5 +++--
  1 file changed, 3 insertions(+), 2 deletions(-)
 
 diff --git a/docs/Makefile b/docs/Makefile
 index 94130228..f4766a64 100644
---- a/docs/Makefile
-+++ b/docs/Makefile
+--- a/proxmox-backup/docs/Makefile
++++ b/proxmox-backup/docs/Makefile
 @@ -67,12 +67,13 @@ API_VIEWER_FILES :=							\
  SPHINXOPTS    =
  SPHINXBUILD   = sphinx-build
  BUILDDIR      = output
 +RUSTC_TARGET ?=
- 
+
  ifeq ($(BUILD_MODE), release)
 -COMPILEDIR := ../target/release
 +COMPILEDIR := ../target/$(RUSTC_TARGET)/release
@@ -27,7 +27,7 @@ index 94130228..f4766a64 100644
 +COMPILEDIR := ../target/$(RUSTC_TARGET)/debug
  SPHINXOPTS    += -t devbuild
  endif
- 
--- 
+
+--
 2.40.0
 

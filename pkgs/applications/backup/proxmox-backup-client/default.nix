@@ -72,7 +72,7 @@ rustPlatform.buildRustPackage {
     proxmox-pathpatterns_src
   ];
 
-  sourceRoot = proxmox-backup_src.name;
+  sourceRoot = ".";
 
   # These patches are essentially un-upstreamable, due to being "workarounds" related to the
   # project structure.
@@ -95,10 +95,13 @@ rustPlatform.buildRustPackage {
     # `make docs` assumes that the binaries are located under `target/{debug,release}`, but due
     # to how `buildRustPackage` works, they get put under `target/$RUSTC_TARGET/{debug,release}`.
     # This patch simply fixes that up.
-    ./0001-docs-Add-target-path-fixup-variable.patch
+    ./0003-docs-Add-target-path-fixup-variable.patch
+    ./0004-proxmox-provide-musl-compatibility-for-static-builds.patch
+    ./0005-proxmox-backup-provide-musl-compatibility-for-static.patch
   ];
 
   postPatch = ''
+    cd proxmox-backup
     cp ${./Cargo.lock} Cargo.lock
     rm .cargo/config
   '';
