@@ -683,6 +683,25 @@ let self = {
     };
   };
 
+  security-headers = rec {
+    name = "security-headers";
+    version = "0.1.1";
+
+    src = fetchFromGitHub {
+      owner = "GetPageSpeed";
+      repo = "ngx_security_headers";
+      rev = "v${version}";
+      hash = "sha256-/y4a07MHHhtcpbc9Ls0/M5N2GUbEotRHtgw5H95YG2g=";
+    };
+
+    meta = {
+      description = "Module for sending security headers";
+      homepage = "https://github.com/GetPageSpeed/ngx_security_headers";
+      license = with lib.licenses; [ bsd2 ];
+      maintainers = with lib.maintainers; [ christoph-heiss ];
+    };
+  };
+
   set-misc = {
     name = "set-misc";
     src = fetchFromGitHub {
