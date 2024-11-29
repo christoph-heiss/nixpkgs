@@ -686,6 +686,7 @@ in {
   nginx-http3 = handleTest ./nginx-http3.nix {};
   nginx-mime = handleTest ./nginx-mime.nix {};
   nginx-modsecurity = handleTest ./nginx-modsecurity.nix {};
+  nginx-security-headers = handleTest ./nginx-security-headers.nix {};
   nginx-moreheaders = handleTest ./nginx-moreheaders.nix {};
   nginx-njs = handleTest ./nginx-njs.nix {};
   nginx-proxyprotocol = handleTest ./nginx-proxyprotocol {};
