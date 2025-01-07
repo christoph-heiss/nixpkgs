@@ -91,13 +91,9 @@ rustPlatform.buildRustPackage {
     # Debian packages). This patch redirects all these dependencies to a local, relative path, which
     # works in combination with the other three repos being checked out.
     ./0001-cargo-re-route-dependencies-not-available-on-crates..patch
-    # `make docs` assumes that the binaries are located under `target/{debug,release}`, but due
-    # to how `buildRustPackage` works, they get put under `target/$RUSTC_TARGET/{debug,release}`.
-    # This patch simply fixes that up.
-    ./0002-docs-Add-target-path-fixup-variable.patch
     # Need to use a patched version of the `h2` crate (with a downgraded dependency, see also postPatch).
     # This overrides it in the Cargo.toml as needed.
-    ./0003-cargo-use-local-patched-h2-dependency.patch
+    ./0002-cargo-use-local-patched-h2-dependency.patch
     # This patch prevents the generation of the man-pages for other components inside the repo,
     # which would require them too be built too. Thus avoid wasting resources and just skip them.
     (fetchpatch {
@@ -121,7 +117,7 @@ rustPlatform.buildRustPackage {
   postBuild = ''
     make -C docs \
       DEB_VERSION=${version} DEB_VERSION_UPSTREAM=${version} \
-      RUSTC_TARGET=${stdenv.hostPlatform.config} \
+      DEB_HOST_RUST_TYPE=${stdenv.hostPlatform.config} \
       BUILD_MODE=release \
       proxmox-backup-client.1 pxar.1
   '';
