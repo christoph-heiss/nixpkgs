@@ -1,0 +1,44 @@
+From 750d734a22ceac5612c91685357e6873354bf4fc Mon Sep 17 00:00:00 2001
+From: Christoph Heiss <christoph@c8h4.io>
+Date: Mon, 31 Mar 2025 15:10:36 +0200
+Subject: [PATCH offline-mirror] cargo: re-route dependencies not available on
+ crates.io to local repo
+
+Signed-off-by: Christoph Heiss <christoph@c8h4.io>
+---
+ Cargo.toml | 22 +++++++++++-----------
+ 1 file changed, 11 insertions(+), 11 deletions(-)
+
+diff --git a/Cargo.toml b/Cargo.toml
+index 66c172d..9a362b9 100644
+--- a/Cargo.toml
++++ b/Cargo.toml
+@@ -25,14 +25,14 @@ sequoia-openpgp = { version = "1.12" }
+ walkdir = "2.3.1"
+ xz2 = "0.1"
+ 
+-proxmox-apt = "0.11"
+-proxmox-apt-api-types = "1.0"
+-proxmox-async = "0.4"
+-proxmox-http = { version = "0.9", features = [ "client-sync", "client-trait" ]}
+-proxmox-router = { version = "3", features = [ "cli" ], default-features = false }
+-proxmox-schema = { version = "3.1.4", features = [ "api-macro" ] }
+-proxmox-section-config = "2"
+-proxmox-serde = "0.1"
+-proxmox-subscription = { version = "0.4.2", features = [ "api-types" ] }
+-proxmox-sys = { version = "0.6", features = [ "timer" ] }
+-proxmox-time = "2"
++proxmox-apt.path = "../proxmox/proxmox-apt"
++proxmox-apt-api-types.path = "../proxmox/proxmox-apt-api-types"
++proxmox-async.path = "../proxmox/proxmox-async"
++proxmox-http = { path = "../proxmox/proxmox-http", features = [ "client-sync", "client-trait" ]}
++proxmox-router = { path = "../proxmox/proxmox-router", features = [ "cli" ], default-features = false }
++proxmox-schema = { path = "../proxmox/proxmox-schema", features = [ "api-macro" ] }
++proxmox-section-config.path = "../proxmox/proxmox-section-config"
++proxmox-serde.path = "../proxmox/proxmox-serde"
++proxmox-subscription = { path = "../proxmox/proxmox-subscription", features = [ "api-types" ] }
++proxmox-sys = { path = "../proxmox/proxmox-sys", features = [ "timer" ] }
++proxmox-time.path = "../proxmox/proxmox-time"
+-- 
+2.48.1
+
