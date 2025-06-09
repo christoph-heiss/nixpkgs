@@ -1,0 +1,60 @@
+From ea54ae18d9b2f984f69de9fe69c5783be161abfd Mon Sep 17 00:00:00 2001
+From: Christoph Heiss <christoph@c8h4.io>
+Date: Sun, 8 Jun 2025 15:22:03 +0200
+Subject: [PATCH 6/6] sys: add support for compiling with musl as libc
+
+Signed-off-by: Christoph Heiss <christoph@c8h4.io>
+---
+ proxmox-sys/src/fs/file.rs     | 2 ++
+ proxmox-sys/src/fs/mod.rs      | 2 +-
+ proxmox-sys/src/linux/timer.rs | 4 ++--
+ 3 files changed, 5 insertions(+), 3 deletions(-)
+
+diff --git a/proxmox-sys/src/fs/file.rs b/proxmox-sys/src/fs/file.rs
+index 1f8f9697..9a1d7edb 100644
+--- a/proxmox-sys/src/fs/file.rs
++++ b/proxmox-sys/src/fs/file.rs
+@@ -284,6 +284,8 @@ pub fn atomic_open_or_create_file<P: AsRef<Path>>(
+     let rename_result = temp_file_name.with_nix_path(|c_file_name| {
+         path.with_nix_path(|new_path| unsafe {
+             // This also works on file systems which don't support hardlinks (eg. vfat)
++            // musl doesn't have renameat2() (yet)
++            #[cfg(not(target_env = "musl"))]
+             match Errno::result(libc::renameat2(
+                 libc::AT_FDCWD,
+                 c_file_name.as_ptr(),
+diff --git a/proxmox-sys/src/fs/mod.rs b/proxmox-sys/src/fs/mod.rs
+index 752b75d2..e8339264 100644
+--- a/proxmox-sys/src/fs/mod.rs
++++ b/proxmox-sys/src/fs/mod.rs
+@@ -170,7 +170,7 @@ pub fn fs_info<P: ?Sized + nix::NixPath>(path: &P) -> nix::Result<FileSystemInfo
+         available: stat.f_bavail * block_size,
+         total_inodes: stat.f_files,
+         free_inodes: stat.f_ffree,
+-        fs_type: stat.f_type,
++        fs_type: stat.f_type as i64,
+         fs_id: stat.f_fsid,
+     })
+ }
+diff --git a/proxmox-sys/src/linux/timer.rs b/proxmox-sys/src/linux/timer.rs
+index bb01dc81..78072dd3 100644
+--- a/proxmox-sys/src/linux/timer.rs
++++ b/proxmox-sys/src/linux/timer.rs
+@@ -180,12 +180,12 @@ impl Timer {
+             }
+             TimerEvent::ThreadSignal(tid, signo) => {
+                 ev.sigev_signo = signo.0;
+-                ev.sigev_notify = libc::SIGEV_THREAD_ID;
++                ev.sigev_notify = 4;
+                 ev.sigev_notify_thread_id = tid.0;
+             }
+             TimerEvent::ThisThreadSignal(signo) => {
+                 ev.sigev_signo = signo.0;
+-                ev.sigev_notify = libc::SIGEV_THREAD_ID;
++                ev.sigev_notify = 4;
+                 ev.sigev_notify_thread_id = gettid().0;
+             }
+         }
+-- 
+2.49.0
+

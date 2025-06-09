@@ -16,6 +16,8 @@
 }:
 
 let
+  inherit (stdenv.targetPlatform) isStatic isMusl;
+
   pname = "proxmox-backup-client";
   version = "3.4.2";
 
@@ -98,24 +100,38 @@ rustPlatform.buildRustPackage {
     # Upstream uses a patched version of the h2 crate (see [0]), which does not apply here.
     # [0] https://git.proxmox.com/?p=debcargo-conf.git;a=blob;f=src/h2/debian/patches/add-legacy.patch;h=0913da317
     ./0005-Revert-h2-switch-to-legacy-feature.patch
+  ] ++ (lib.optional isMusl ./0007-pbs-tools-client-make-compatible-with-musl.patch);
+
+  postPatch =
+    ''
+      # need to downgrade the `http` crate for `h2`
+      # see https://aur.archlinux.org/cgit/aur.git/tree/0003-cargo-downgrade-http-to-0.2.12.patch?h=proxmox-backup-client
+      cp -r ../h2 .
+      chmod u+w ./h2
+      (cd h2 && sed -i 's/^http = "1"$/http = "0.2.12"/' Cargo.toml)
+
+      cp ${./Cargo.lock} Cargo.lock
+      rm .cargo/config.toml
+
+      # avoid an unnecessary dependency on `system.dev`, due to greedy linkage by
+      # rustc and proxmox-systemd
+      # see also upstream Makefile for similar workaround
+      mkdir -p .dep-stubs && \
+        echo '!<arch>' >.dep-stubs/libsystemd.a
+    ''
+    + (lib.optionalString isMusl ''
+      substituteInPlace ../proxmox-fuse/build.rs \
+        --replace-fail pkgconf ${stdenv.targetPlatform.config}-pkgconf
+
+        (cd ../proxmox && \
+          chmod -R u+w proxmox-sys && \
+          patch -up1 <${./0006-sys-add-support-for-compiling-with-musl-as-libc.patch})
+    '');
+
+  RUSTFLAGS = [
+    "-L.dep-stubs"
+    "-Ctarget-feature=+crt-static"
   ];
-
-  postPatch = ''
-    # need to downgrade the `http` crate for `h2`
-    # see https://aur.archlinux.org/cgit/aur.git/tree/0003-cargo-downgrade-http-to-0.2.12.patch?h=proxmox-backup-client
-    cp -r ../h2 .
-    chmod u+w ./h2
-    (cd h2 && sed -i 's/^http = "1"$/http = "0.2.12"/' Cargo.toml)
-
-    cp ${./Cargo.lock} Cargo.lock
-    rm .cargo/config.toml
-
-    # avoid an unnecessary dependency on `system.dev`, due to greedy linkage by
-    # rustc and proxmox-systemd
-    # see also upstream Makefile for similar workaround
-    mkdir -p .dep-stubs && \
-      echo '!<arch>' >.dep-stubs/libsystemd.a
-  '';
 
   postBuild = ''
     make -C docs \

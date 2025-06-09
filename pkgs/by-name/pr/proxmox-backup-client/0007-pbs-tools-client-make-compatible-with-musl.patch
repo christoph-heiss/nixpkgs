@@ -1,0 +1,39 @@
+From 8c3660b5464516843cba4906fc433fe7e41393de Mon Sep 17 00:00:00 2001
+From: Christoph Heiss <christoph@c8h4.io>
+Date: Mon, 9 Jun 2025 01:39:50 +0200
+Subject: [PATCH 7/7] pbs-{tools,client}: make compatible with musl
+
+Signed-off-by: Christoph Heiss <christoph@c8h4.io>
+---
+ pbs-client/src/pxar/create.rs | 2 +-
+ pbs-tools/src/lib.rs          | 1 +
+ 2 files changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/pbs-client/src/pxar/create.rs b/pbs-client/src/pxar/create.rs
+index 4968e4b8..ba651297 100644
+--- a/pbs-client/src/pxar/create.rs
++++ b/pbs-client/src/pxar/create.rs
+@@ -79,7 +79,7 @@ fn detect_fs_type(fd: RawFd) -> Result<i64, Errno> {
+     Errno::result(res)?;
+     let fs_stat = unsafe { fs_stat.assume_init() };
+ 
+-    Ok(fs_stat.f_type)
++    Ok(fs_stat.f_type as i64)
+ }
+ 
+ fn strip_ascii_whitespace(line: &[u8]) -> &[u8] {
+diff --git a/pbs-tools/src/lib.rs b/pbs-tools/src/lib.rs
+index af900c92..923df1d9 100644
+--- a/pbs-tools/src/lib.rs
++++ b/pbs-tools/src/lib.rs
+@@ -22,6 +22,7 @@ pub mod async_lru_cache;
+ /// running backup jobs. We measured a reduction by a factor of 10-20 in experiments and see much
+ /// less erratic behavior in the overall's runtime RSS size.
+ pub fn setup_libc_malloc_opts() {
++    #[cfg(not(target_env = "musl"))]
+     unsafe {
+         libc::mallopt(libc::M_MMAP_THRESHOLD, 4096 * 32);
+     }
+-- 
+2.49.0
+
