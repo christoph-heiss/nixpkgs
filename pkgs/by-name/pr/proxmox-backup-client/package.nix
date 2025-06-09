@@ -11,9 +11,7 @@
   libxcrypt,
   installShellFiles,
   sphinx,
-  systemd,
   stdenv,
-  fetchpatch,
   versionCheckHook,
 }:
 
@@ -111,6 +109,12 @@ rustPlatform.buildRustPackage {
 
     cp ${./Cargo.lock} Cargo.lock
     rm .cargo/config.toml
+
+    # avoid an unnecessary dependency on `system.dev`, due to greedy linkage by
+    # rustc and proxmox-systemd
+    # see also upstream Makefile for similar workaround
+    mkdir -p .dep-stubs && \
+      echo '!<arch>' >.dep-stubs/libsystemd.a
   '';
 
   postBuild = ''
@@ -156,14 +160,16 @@ rustPlatform.buildRustPackage {
     installShellFiles
     sphinx
   ];
+
   buildInputs = [
     openssl
     fuse3
     libuuid
     acl
     libxcrypt
-    systemd.dev
   ];
+
+  strictDeps = true;
 
   doInstallCheck = true;
   nativeInstallCheckInputs = [ versionCheckHook ];
