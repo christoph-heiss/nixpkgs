@@ -11697,17 +11697,18 @@ with pkgs;
     ];
   };
 
-  floorp-unwrapped = import ../applications/networking/browsers/floorp {
-    inherit
-      stdenv
-      lib
-      fetchFromGitHub
-      buildMozillaMach
-      nixosTests
-      ;
-  };
+  # floorp-unwrapped = import ../applications/networking/browsers/floorp {
+  #   inherit
+  #     stdenv
+  #     lib
+  #     fetchFromGitHub
+  #     buildMozillaMach
+  #     nixosTests
+  #     deno
+  #     ;
+  # };
 
-  floorp = wrapFirefox floorp-unwrapped { };
+  # floorp = wrapFirefox floorp-unwrapped { };
 
   formiko =
     with python3Packages;
