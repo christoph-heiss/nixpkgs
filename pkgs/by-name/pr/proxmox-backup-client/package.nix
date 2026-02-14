@@ -14,27 +14,27 @@
 
 let
   pname = "proxmox-backup-client";
-  version = "4.0.14";
+  version = "4.1.2";
 
   proxmox-backup_src = fetchgit {
     url = "git://git.proxmox.com/git/proxmox-backup.git";
-    rev = "8b1b5f8e4d8216a0c45146b426dbfaff01ac0068";
+    rev = "ef5bf28fe5c2b64d407ce4f34c4f92fcc2e87dc7";
     name = "proxmox-backup";
-    hash = "sha256-aLiGJcCsHI4QFfMwgmQsXWabRyQ829itNsIDcaVW4FA=";
+    hash = "sha256-Mfd0DDvekxExh5iv8vPv2tVV75BM46Z15FwPDstZNus=";
   };
 
   proxmox_src = fetchgit {
     url = "git://git.proxmox.com/git/proxmox.git";
-    rev = "56c4deb6309c41ff5afa5765b112be967c653857";
+    rev = "bcb9c3e726d2864a2f5058261d34c6eb2de2f82c";
     name = "proxmox";
-    hash = "sha256-mkGvfWWis1W8xBLb8Da/uIauPEMKPosPdZ+UcgMrvkk=";
+    hash = "sha256-y4NYuVaTIv82/vg832gbaCgKY74nS2OuEgEoXVJpubY=";
   };
 
   proxmox-fuse_src = fetchgit {
     url = "git://git.proxmox.com/git/proxmox-fuse.git";
-    rev = "87dbf9bfef9169286263bccffaae3206635ca108"; # 1.0.0
+    rev = "506314563706b0bcd95f99ebedc9b2d1c5532cc4"; # 2.0.0
     name = "proxmox-fuse";
-    hash = "sha256-/8Xy6LTql3gHfHuxT0lK5mhLGc58YAb1W+eyusmEP8Y=";
+    hash = "sha256-QVr6ylGaGOpkmidq8TtEB4b/oInGIcufHMBB0XwzbPw=";
   };
 
   proxmox-pxar_src = fetchgit {
