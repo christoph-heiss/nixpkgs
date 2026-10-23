@@ -18,7 +18,7 @@ let
   cfg = config.services.yarr;
 in
 {
-  meta.maintainers = with lib.maintainers; [ christoph-heiss ];
+  meta.maintainers = with lib.maintainers; [ ];
 
   options.services.yarr = {
     enable = mkEnableOption "Yet another rss reader";

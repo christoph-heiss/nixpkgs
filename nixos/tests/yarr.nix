@@ -2,7 +2,7 @@
 
 {
   name = "yarr";
-  meta.maintainers = with lib.maintainers; [ christoph-heiss ];
+  meta.maintainers = with lib.maintainers; [ ];
 
   nodes.machine =
     { pkgs, ... }:
