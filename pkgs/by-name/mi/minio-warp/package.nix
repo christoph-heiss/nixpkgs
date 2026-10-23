@@ -44,7 +44,7 @@ buildGoModule (finalAttrs: {
     homepage = "https://github.com/minio/warp";
     changelog = "https://github.com/minio/warp/releases/tag/v${finalAttrs.version}";
     license = lib.licenses.agpl3Plus;
-    maintainers = with lib.maintainers; [ christoph-heiss ];
+    maintainers = with lib.maintainers; [ ];
     mainProgram = "minio-warp";
   };
 })
