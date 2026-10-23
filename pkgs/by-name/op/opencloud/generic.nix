@@ -34,7 +34,6 @@
 
 let
   maintainers = with lib.maintainers; [
-    christoph-heiss
     k900
     deadbaed
   ];

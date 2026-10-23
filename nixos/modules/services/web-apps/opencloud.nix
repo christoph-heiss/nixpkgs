@@ -272,7 +272,6 @@ in
   meta = {
     doc = ./opencloud.md;
     maintainers = with lib.maintainers; [
-      christoph-heiss
       k900
     ];
   };

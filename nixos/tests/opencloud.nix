@@ -58,7 +58,6 @@ in
   inherit name;
 
   meta.maintainers = with lib.maintainers; [
-    christoph-heiss
     k900
   ];
 
