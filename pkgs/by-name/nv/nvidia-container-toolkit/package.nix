@@ -92,7 +92,6 @@ buildGoModule (finalAttrs: {
     platforms = lib.platforms.linux;
     maintainers = with lib.maintainers; [
       cpcloud
-      christoph-heiss
       zeusec
     ];
   };

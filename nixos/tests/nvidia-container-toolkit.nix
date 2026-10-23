@@ -93,7 +93,6 @@ in
   meta = with lib.maintainers; {
     maintainers = [
       ereslibre
-      christoph-heiss
     ];
   };
   defaults =
