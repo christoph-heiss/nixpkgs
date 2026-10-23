@@ -78,7 +78,6 @@ stdenvNoCC.mkDerivation rec {
     license = lib.licenses.asl20;
     maintainers = with lib.maintainers; [
       stunkymonkey
-      christoph-heiss
     ];
     platforms = lib.platforms.all;
   };
