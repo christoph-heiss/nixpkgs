@@ -418,9 +418,9 @@ pkgs/development/python-modules/buildcatrust/ @ajs124 @lukegb @mweinelt
 /pkgs/applications/networking/cluster/terraform-providers @zowoq
 
 # Forgejo
-nixos/modules/services/misc/forgejo.* @adamcstephens @bendlas @christoph-heiss @emilylange @nycodeghg @pyrox0 @tebriel
-pkgs/by-name/fo/forgejo/              @adamcstephens @bendlas @christoph-heiss @emilylange @nycodeghg @pyrox0 @tebriel
-nixos/tests/forgejo.nix               @adamcstephens @bendlas @christoph-heiss @emilylange @nycodeghg @pyrox0 @tebriel
+nixos/modules/services/misc/forgejo.* @adamcstephens @bendlas @emilylange @nycodeghg @pyrox0 @tebriel
+pkgs/by-name/fo/forgejo/              @adamcstephens @bendlas @emilylange @nycodeghg @pyrox0 @tebriel
+nixos/tests/forgejo.nix               @adamcstephens @bendlas @emilylange @nycodeghg @pyrox0 @tebriel
 
 # Dotnet
 /pkgs/build-support/dotnet                  @corngood

@@ -273,7 +273,6 @@ with lib.maintainers;
     members = [
       adamcstephens
       bendlas
-      christoph-heiss
       emilylange
       marie
       pyrox0
