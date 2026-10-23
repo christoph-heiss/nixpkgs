@@ -97,7 +97,6 @@ stdenv.mkDerivation rec {
     mainProgram = "peergos";
     maintainers = with lib.maintainers; [
       raspher
-      christoph-heiss
     ];
     platforms = lib.platforms.all;
   };
