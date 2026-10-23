@@ -43,7 +43,6 @@ buildGoModule (finalAttrs: {
     license = lib.licenses.mit;
     maintainers = with lib.maintainers; [
       bjornfor
-      christoph-heiss
       xddxdd
     ];
     mainProgram = "glauth";
